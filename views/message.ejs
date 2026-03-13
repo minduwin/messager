@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/message.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="upperBoard">
+        <div class="headPage">
+            <img src="/3p.svg" alt="">
+            <h1>Messager</h1>
+        </div>
+        <p><%= message.user %></p>
+        <span><%= message.added.toLocaleDateString('en-US', 
+            { month: 'short', day: '2-digit' }) %>
+        </span>
+        <p><%= message.text %></p>
+</body>
+</html>
