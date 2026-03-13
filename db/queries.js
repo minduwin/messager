@@ -1,7 +1,7 @@
 const pool = require('./pool');
 
 async function getAllMessages() {
-    const { rows } = await pool.query('SELECT * FROM usernames');
+    const { rows } = await pool.query('SELECT * FROM messages');
     return rows;
 }
 
