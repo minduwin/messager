@@ -1,21 +1,3 @@
-const messages = [
-    {
-        user: 'Jibinho',
-        text: 'To com uma fome, moreno...',
-        added: new Date()
-    },
-    {
-        user: 'Charlinho',
-        text: 'Gosto mais de batata e de estudar.',
-        added: new Date()
-    },
-    {
-        user: 'Prof. Gilmar',
-        text: 'Tuuudo por causa da... Vadiagem!!',
-        added: new Date()
-    },
-];
-
 const db = require('../db/queries');
 
 async function showMessage(req, res) {
@@ -33,23 +15,45 @@ async function newMessage(req, res) {
 };
 
 async function postMessage(req, res) {
-    const { user, text } = req.body;
+    const { alias, info } = req.body;
 
-    if (!user || !text) {
-        return res.status(400).send('Please fill all fields...')
+    if (!alias || !info ) {
+        return res.status(400).send('Please fill all the fields...');
     }
 
-    await db.insertMessage({ user: userName, text: userMessage });
-    res.redirect('/');
+    try {
+        await db.insertMessage(alias, info);
+        res.redirect('/');
+    } catch (error) {
+        console.error('Database error: ', error);
+        res.status(500).send('Something went wrong...');
+    }
 };
 
-const openMessage = (req, res) => {
-    const messageId = parseInt(req.params.id);
-    if (messageId >= 0 && messageId < messages.length) {
-        const message = messages[messageId];
-        res.render('message', { title: `Message from ${message.user}`, message });
-    } else {
-        res.status(404).send('Message not found');
+async function openMessage(req, res) {
+    // const messageId = parseInt(req.params.id);
+    // if (messageId >= 0 && messageId < messages.length) {
+    //     const message = messages[messageId];
+    //     res.render('message', { title: `Message from ${message.username}`, message });
+    // } else {
+    //     res.status(404).send('Message not found');
+    // }
+
+    const messageId = req.params.id;
+
+    try {
+        const message = await db.getMessage(messageId);
+        if (message) {
+            res.render('message', {
+                title: `Message from ${message.username}`,
+                message: message
+            });
+        } else {
+            res.status(500).send('Message not found');
+        }
+    } catch (error) {
+        console.error('Message error: ', error);
+        res.status(400).send('Server error');
     }
 };
 

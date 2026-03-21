@@ -14,5 +14,7 @@ module.exports = new Pool({
     database: `${data_database}`,
     password: `${data_pwd}`,
     port: `${data_port}`,
-    ssl: { rejectUnauthorized: false },
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000,
+    ssl: true,
 });

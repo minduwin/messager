@@ -15,7 +15,7 @@
             <li class="message">
                 <div class="msgText">
                     <div class="mainText">
-                        <p><%= msg.user %></p>
+                        <p><%= msg.username %></p>
                         <span>
                             <%= msg.added.toLocaleDateString('en-US', 
                             { month: 'short', day: '2-digit' }) %>
@@ -24,7 +24,7 @@
                     <div class="mainMessage">
                         <p><%= msg.text %></p>
                         <div class="openBtn" title="Open Message">
-                            <a href="/messages/<%= index %>">
+                            <a href="/messages/<%= msg.id %>">
                                 <button>Open</button>
                             </a>
                         </div>

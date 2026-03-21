@@ -5,10 +5,10 @@ async function getAllMessages() {
     return rows;
 }
 
-async function insertMessage(user, text) {
+async function insertMessage(alias, info) {
     await pool.query(
-        'INSERT INTO messages (user, text) VALUES ($1, $2)',
-        [user, text]
+        'INSERT INTO messages (username, text) VALUES ($1, $2)',
+        [alias, info]
     );
 }
 
@@ -16,11 +16,20 @@ async function searchUser(name) {
     const searchName = `%${name}%`;
 
     const res = await pool.query(
-        'SELECT * FROM messages WHERE user ILIKE $1',
+        'SELECT * FROM messages WHERE username ILIKE $1',
         [searchName]
     );
 
     return res.rows;
+}
+
+async function getMessage(id) {
+    const res = await pool.query(
+        'SELECT * FROM messages WHERE id = $1',
+        [id]
+    );
+
+    return res.rows[0];
 }
 
 async function deleteUser(id) {
@@ -37,4 +46,5 @@ module.exports = {
     insertMessage,
     searchUser,
     deleteUser,
+    getMessage
 };
